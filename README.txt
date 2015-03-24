@@ -1,6 +1,6 @@
-MAKE SURE TO READ THIS
+Libraries:
+- https://github.com/jdereg/json-io - Json serialization
 
-*********** Use ctrl+alt+shift+s **********
-- Set src as the 'source'
-- Set out to 'exclude'
-- Using library https://github.com/jdereg/json-io
+Hello there anyone who would like to try out this mediocre game!
+Feel free to download out/artifacts/Home_Nahdras.jar
+You can ignore the rest.
