@@ -301,7 +301,7 @@ public class App {
 
         System.out.println("Error code 404: Error code not found");
         System.out.println("Will now attempt to find error code 404");
-        System.out.println("Press to enter to continue");
+        System.out.println("Press to enter to continue...");
         sc.nextLine();
         jokeError(sc);
 
