@@ -18,6 +18,12 @@ public class CombatMechanics {
 
     }
 
+    private static void regenStamina(CombatMob mob) {
+
+        mob.addStamina(Math.round(mob.getMaxStamina() * mob.getStaminaRegenRate()));
+
+    }
+
     public static void evalClash(PlayerCharacter mob1, AICombatMob mob2) {
 
         if (mob1.isAttacking() && mob2.isAttacking()) {
@@ -70,13 +76,13 @@ public class CombatMechanics {
 
             if (!mob1.isAttacking()) {
 
-                mob1.addStamina(Math.round(mob2.getMaxStamina() * 3 / 8));
+                regenStamina(mob1);
 
             }
 
             if (!mob2.isAttacking()) {
 
-                mob2.addStamina(Math.round(mob2.getMaxStamina() * 3 / 8));
+                regenStamina(mob2);
 
             }
 
@@ -99,13 +105,14 @@ public class CombatMechanics {
 
             mob1.setAttacking(false);
 
-            System.out.println("Congratulations. You have defeated this... enemy. I'm too lazy to code in specific messages for each mob beaten, after all");
+            System.out.println("Congratulations. You have defeated this... enemy. I'm too lazy to code in specific messages for each mob beaten, after all.");
 
             PlayerCharacter.heal(App.pl);
 
             System.out.println("You have also been magically (divinely?) healed. It must be an act of Yahweh, or something.");
-            App.battleCount = App.battleCount+1;
-            App.advanceStory(sc);
+            App.battleCount += 1;
+            // TODO As I put in other past TODO, I don't think this is necessary... It all depends on what you want to do.
+            // App.advanceStory(sc);
 
         } else {
 
@@ -120,7 +127,7 @@ public class CombatMechanics {
 
     public static void battlePrompt(PlayerCharacter pl, Scanner sc) {
 
-        String choice = "";
+        String choice;
 
         System.out.println("Do you want to block or attack?");
 

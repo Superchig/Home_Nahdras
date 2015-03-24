@@ -11,7 +11,7 @@ public class AICombatMob extends CombatMob {
 
     }
 
-    public static void AIChoose(AICombatMob AIMob) {
+    public void AIChoose(AICombatMob AIMob) {
 
         ChangeRan();
 
@@ -21,6 +21,7 @@ public class AICombatMob extends CombatMob {
 
 
         if (AIMob.getStamina() >= weakAttemptedStamina) {
+
 
             if (ran <= 0.75) {
 
@@ -93,7 +94,7 @@ public class AICombatMob extends CombatMob {
         //If stamina - subtracted is lower than zero...
         if (this.getStamina() - staminaSubtracted < 0) {
 
-            AICombatMob.AIChoose(this);
+            this.AIChoose(this);
 
         } else {
 
@@ -109,4 +110,7 @@ public class AICombatMob extends CombatMob {
         super(health, maxHealth, stamina, maxStamina);
     }
 
+    public static float getRan() {
+        return ran;
+    }
 }

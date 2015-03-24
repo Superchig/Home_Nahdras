@@ -16,11 +16,13 @@ public class App {
     public static PlayerCharacter pl = new PlayerCharacter(200, 200, 100, 100);
 
     private static AICombatMob trollMob = new TrollMob(150, 150, 50, 50);
-    private static AICombatMob bearMob = new BearMob(175, 175, 75, 75);
+    private static AICombatMob bearMob = new BearodyteMob(175, 175, 75, 75);
 
     public static void startMenu(Scanner sc) {
 
         System.out.println("Welcome to this mediocre indie game made by two middle-schoolers! Would you like to play, load, quit, or die in a hole?");
+
+        System.out.println("NOTE: USING THE PLAY AFTER ALREADY SAVING MAY OVERWRITE YOUR SAVE FILE");
 
         String menuChoice = sc.nextLine().toLowerCase();
 
@@ -37,7 +39,7 @@ public class App {
 
         } else if (menuChoice.equals("quit")) {
 
-            System.out.println("Well then. Good job you party pooper.");
+            System.out.println("Well then. Good job, you party pooper");
 
         } else if (menuChoice.equals("die in a hole")) {
 
@@ -49,11 +51,13 @@ public class App {
 
             ReadObjects.loadGame();
 
+            pl = ReadObjects.getPlStorage();
+
             evalLocation(sc);
 
         } else {
 
-            System.out.println("Need I remind you this is a mediocre game? Use play, quit, or die in a hole.");
+            System.out.println("Need I remind you this is a mediocre game? Use play, quit, load, or die in a hole.");
 
             startMenu(sc);
 
@@ -134,6 +138,8 @@ public class App {
 
         pl.setLocation("inForest1");
 
+        WriteObjects.savePrompt(sc);
+
         System.out.println("Within the random forest, you see a troll. Do you want to poke it, run, or try to communicate?");
 
         System.out.println("And no, poking it is not trying to communicate.");
@@ -174,6 +180,8 @@ public class App {
 
         pl.setLocation("trollInteract1");
 
+        WriteObjects.savePrompt(sc);
+
         System.out.println("What would you like to say? \n");
 
         System.out.println("a. Death");
@@ -206,12 +214,14 @@ public class App {
         } else if (choice.equals("d") || choice.equals("can you get me out of this game?")) {
 
             System.out.println("The troll says, 'Great job breaking the fourth wall there.'");
-            System.out.println("The troll says, 'Anyway, Christopher and Jack have not implemented serialization quite yet, so you are incapable of saving your progress.'");
+            System.out.println("The troll says, 'Anyway, Christopher and Jack have implemented json serialization. So you can save your progress, to a point.'");
             System.out.println("The troll says, 'You always have the option of closing the window, of course.'");
+            tempEnd(sc);
 
         } else if (choice.equals("e") || choice.equals("hey! There was no 'c' option!")) {
 
             System.out.println("The troll says, 'Quite an astute observation, kind sir.'");
+            tempEnd(sc);
 
         } else {
 
@@ -227,21 +237,31 @@ public class App {
 
         pl.setLocation("postTrollBattle");
 
+        WriteObjects.savePrompt(sc);
+
         System.out.println("You've defeated the troll!\nYou search the bag that the troll had and find a map!");
 
-        System.out.println("What do you want to do now? Use the map, or get yourself the heck out of this mess?");
+        System.out.println("Did you murder that poor guy? I don't know.");//Nonono, we 'defeated' him!
+
+        System.out.println("What do you want to do now? Use the map, or get the heck out of this mess?");
 
         String choice = sc.nextLine().toLowerCase();
 
         if(choice.equals("use the map")){
 
             System.out.println("It appears that the map wants to you head north-east. Fortunately, you happened to have brought your handy compass with you!");
-            System.out.println("As you head north-east you 'accidently' run into a bear.");/*Please do not hesitate to have this be another creature.*/
-            System.out.println("The bear is outraged at you and decides to attack you!");
+            System.out.println("As you head north-east you 'accidently' run into a bearodyte.");
+            /*Please do not hesitate to have this be another creature.*/
+            System.out.println("Bearodytes are a form of sentient bear. They're widely renowned for holding grudges, especially through generations.");
+            System.out.println("They can read and write, but cannot speak any known human language.");
+            System.out.println("The bearodyte is outraged at you and decides to attack you!");
+
             CombatMechanics.battleLoop(pl, bearMob, sc);
 
+            tempEnd(sc);
 
-        } else if(choice.equals("get me the heck out of this mess")){
+
+        } else if (choice.equals("get the heck out of this mess")) {
 
             System.out.println("That's okay, but you're a wuss, who knows what that map leads to..");
             System.out.println("Returning you to the very beginning.");
@@ -259,18 +279,31 @@ public class App {
     //This is useful.
     public static int battleCount = 0;
     //Used when completing a battle..
+    //TODO Do we need advanceStory? Can't we just call the next function after the battle is over?
     public static void advanceStory(Scanner sc){
 
-        if(battleCount == 1){
+        if (battleCount == 1) {
 
             postTrollBattle(sc);
 
         } else if(battleCount == 2){
             /*Insert an amazing battle that we are too lazy to make at the moment.*/
-        } else {
+        } else {//If we somehow mess up and it advances to a nonexistent function.
             //I'm very funny, am I not?
             System.out.println("Please contact your local Home_Nahdras programmer if you see this message, thank you.");
+            System.out.println("The error code is: ");
+            jokeError(sc);
         }
+
+    }
+
+    public static void jokeError(Scanner sc) {
+
+        System.out.println("Error code 404: Error code not found");
+        System.out.println("Will now attempt to find error code 404");
+        System.out.println("Press to enter to continue");
+        sc.nextLine();
+        jokeError(sc);
 
     }
 
@@ -304,6 +337,15 @@ public class App {
 
     }
 
+    public static void tempEnd(Scanner sc) {
+
+        System.out.println("This is a temporary ending. This means that we were too lazy to code in a permanent one.");
+        System.out.println("Sending you back to the main menu.");
+
+        startMenu(sc);
+
+    }
+
 
     public static void main(String[] args) {
 
@@ -315,8 +357,6 @@ public class App {
         ///////////// Resume normality /////////
 
         App.startMenu(sc);
-
-        WriteObjects.saveGame();
 
         sc.close();
 

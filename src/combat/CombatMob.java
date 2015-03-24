@@ -18,6 +18,8 @@ public class CombatMob implements Serializable {
 
     private int attemptedStamina;
 
+    private float staminaRegenRate = 0.375f;
+
     private boolean attacking;
 
     public static void heal(CombatMob mob) {
@@ -60,6 +62,14 @@ public class CombatMob implements Serializable {
         this.maxStamina = maxStamina;
         this.stamina = stamina;
         this.maxHealth = maxHealth;
+    }
+
+    public float getStaminaRegenRate() {
+        return staminaRegenRate;
+    }
+
+    public void setStaminaRegenRate(float staminaRegenRate) {
+        this.staminaRegenRate = staminaRegenRate;
     }
 
     public int getHealth() {
