@@ -1,8 +1,6 @@
 package main;
 
-import combat.CombatAI;
-import combat.CombatMechanics;
-import combat.CombatMob;
+import combat.*;
 import dataManagement.ReadObjects;
 import dataManagement.WriteObjects;
 
@@ -15,10 +13,10 @@ import java.util.Scanner;
 public class App {
 
     // I don't know how to use anonymous classes
-    public static CombatMob pl = new CombatMob(200, 200, 100, 100);
+    public static PlayerCharacter pl = new PlayerCharacter(200, 200, 100, 100);
 
-    private static CombatMob trollMob = new CombatMob(150, 150, 50, 50);
-    private static CombatMob bearMob = new CombatMob(175, 175, 75, 75);
+    private static AICombatMob trollMob = new TrollMob(150, 150, 50, 50);
+    private static AICombatMob bearMob = new BearMob(175, 175, 75, 75);
 
     public static void startMenu(Scanner sc) {
 

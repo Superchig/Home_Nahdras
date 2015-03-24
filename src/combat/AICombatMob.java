@@ -1,7 +1,7 @@
 package combat;
 
 
-public class CombatAI {
+public class AICombatMob extends CombatMob {
 
     private static float ran = (float) Math.random();
 
@@ -88,4 +88,24 @@ public class CombatAI {
 
     }
 
+    public void AIChooseStamina(int staminaSubtracted) {
+
+        //If stamina - subtracted is lower than zero...
+        if (this.getStamina() - staminaSubtracted < 0) {
+
+            AICombatMob.AIChoose(this);
+
+        } else {
+
+            this.setAttemptedStamina(staminaSubtracted);
+
+            this.setStamina(this.getStamina() - staminaSubtracted);
+
+        }
+
+    }
+
+    public AICombatMob(int health, int maxHealth, int stamina, int maxStamina) {
+        super(health, maxHealth, stamina, maxStamina);
+    }
 }

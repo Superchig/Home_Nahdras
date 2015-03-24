@@ -18,7 +18,7 @@ public class CombatMechanics {
 
     }
 
-    public static void evalClash(CombatMob mob1, CombatMob mob2) {
+    public static void evalClash(PlayerCharacter mob1, AICombatMob mob2) {
 
         if (mob1.isAttacking() && mob2.isAttacking()) {
 
@@ -39,7 +39,7 @@ public class CombatMechanics {
 
     }
 
-    public static void evalDamage(CombatMob mob1, CombatMob mob2) {
+    public static void evalDamage(PlayerCharacter mob1, AICombatMob mob2) {
 
         if (mob1.getAttemptedStamina() < mob2.getAttemptedStamina()) {
 
@@ -63,7 +63,7 @@ public class CombatMechanics {
 
     }
 
-    public static void battleLoop(CombatMob mob1, CombatMob mob2, Scanner sc) {
+    public static void battleLoop(PlayerCharacter mob1, AICombatMob mob2, Scanner sc) {
 
         while (mob1.getHealth() > 0 && mob2.getHealth() > 0) {
 
@@ -88,7 +88,7 @@ public class CombatMechanics {
 
             battlePrompt(mob1, sc);
 
-            CombatAI.AIChoose(mob2);
+            mob2.AIChoose(mob2);
 
             evalClash(mob1, mob2);
 
@@ -101,7 +101,7 @@ public class CombatMechanics {
 
             System.out.println("Congratulations. You have defeated this... enemy. I'm too lazy to code in specific messages for each mob beaten, after all");
 
-            CombatMob.heal(App.pl);
+            PlayerCharacter.heal(App.pl);
 
             System.out.println("You have also been magically (divinely?) healed. It must be an act of Yahweh, or something.");
             App.battleCount = App.battleCount+1;
@@ -118,7 +118,7 @@ public class CombatMechanics {
 
 
 
-    public static void battlePrompt(CombatMob pl, Scanner sc) {
+    public static void battlePrompt(PlayerCharacter pl, Scanner sc) {
 
         String choice = "";
 
