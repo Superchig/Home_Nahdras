@@ -8,20 +8,30 @@ import java.io.IOException;
 
 import com.cedarsoftware.util.io.JsonIoException;
 import com.cedarsoftware.util.io.JsonReader;
-import combat.CombatMob;
+import combat.PlayerCharacter;
 
 
 public class ReadObjects {
+
+    static PlayerCharacter plStorage;
+
+    public static PlayerCharacter getPlStorage() {
+        return plStorage;
+    }
 
     public static void loadGame() {
 
         try (FileInputStream fs = new FileInputStream("save.json"); ObjectInputStream os = new ObjectInputStream(fs); JsonReader jr = new JsonReader(os)) {
 
-            CombatMob plStorage = (CombatMob) jr.readObject();
+            // Only currently designed to work with App.Startmenu()
+
+            plStorage = (PlayerCharacter) jr.readObject();
 
             System.out.println(plStorage);
 
             System.out.println("Game loaded");
+
+            System.out.println("Starting actual game now...");
 
         } catch (FileNotFoundException e) {
 

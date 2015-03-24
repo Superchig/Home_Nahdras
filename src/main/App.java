@@ -49,6 +49,8 @@ public class App {
 
             ReadObjects.loadGame();
 
+            evalLocation(sc);
+
         } else {
 
             System.out.println("Need I remind you this is a mediocre game? Use play, quit, or die in a hole.");
@@ -270,10 +272,35 @@ public class App {
             System.out.println("Please contact your local Home_Nahdras programmer if you see this message, thank you.");
         }
 
+    }
 
+    public static void evalLocation(Scanner sc) {
 
+        String location = ReadObjects.getPlStorage().getLocation().toLowerCase();
 
+        System.out.println("Location: " + location);
 
+        if (location.equals("firstgamebeforechoices")) {
+
+            firstGameBeforeChoices(sc);
+
+        } else if (location.equals("inforest1")) {
+
+            inForest1(sc);
+
+        } else if (location.equals("trollinteract1")) {
+
+            trollInteract1(sc);
+
+        } else if (location.equals("posttrollbattle")) {
+
+            postTrollBattle(sc);
+
+        } else {
+
+            System.out.println("Hm. It appears that you don't have a valid location.");
+
+        }
 
     }
 

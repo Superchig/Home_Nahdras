@@ -2,13 +2,12 @@
 // I have an idea for a simple combat system. It involves a combination of skill and luck.
 // Probably 2/3 skill and 1/3 luck. Hopefully closer to 3/4 skill and 1/3 luck. Ask me about it later.
 // Crap. Originally, this was static. I may make this abstract, or make it an interface.
-//TODO Make subclass 'PlayerCharacter' which has location
+
 package combat;
 
 import main.App;
 
 import java.io.Serializable;
-import java.util.Scanner;
 
 public class CombatMob implements Serializable {
     //////// Stats /////////////////////
@@ -50,41 +49,6 @@ public class CombatMob implements Serializable {
         } else {
 
             this.setStamina(getStamina() + staminaAdded);
-
-        }
-
-    }
-
-    public void chooseStamina(int staminaSubtracted, Scanner sc) {
-
-        if (this.getStamina() - staminaSubtracted < 0) {
-
-            System.out.println("You can't use this much stamina. Try again.");
-
-            CombatMechanics.battlePrompt(this, sc);
-
-        } else {
-
-            this.setAttemptedStamina(staminaSubtracted);
-
-            this.setStamina(this.getStamina() - staminaSubtracted);
-
-        }
-
-    }
-
-     public void AIChooseStamina(int staminaSubtracted) {
-
-         //If stamina - subtracted is lower than zero...
-        if (this.getStamina() - staminaSubtracted < 0) {
-
-            AICombatMob.AIChoose(this);
-
-        } else {
-
-            this.setAttemptedStamina(staminaSubtracted);
-
-            this.setStamina(this.getStamina() - staminaSubtracted);
 
         }
 

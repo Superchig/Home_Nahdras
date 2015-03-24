@@ -11,41 +11,41 @@ public class AICombatMob extends CombatMob {
 
     }
 
-    public static void AIChoose(CombatMob mob) {
+    public static void AIChoose(AICombatMob AIMob) {
 
         ChangeRan();
 
-        int strongAttemptedStamina = Math.round(mob.getMaxStamina() * 3/4);
-        int mediumAttemptedStamina = Math.round(mob.getMaxStamina()/4);
-        int weakAttemptedStamina = Math.round(mob.getMaxStamina()/10);
+        int strongAttemptedStamina = Math.round(AIMob.getMaxStamina() * 3/4);
+        int mediumAttemptedStamina = Math.round(AIMob.getMaxStamina()/4);
+        int weakAttemptedStamina = Math.round(AIMob.getMaxStamina()/10);
 
 
-        if (mob.getStamina() >= weakAttemptedStamina) {
+        if (AIMob.getStamina() >= weakAttemptedStamina) {
 
             if (ran <= 0.75) {
 
-                mob.setAttacking(true);
+                AIMob.setAttacking(true);
 
                 if (ran > 0.50) {
 
-                    if (mob.getStamina() > strongAttemptedStamina) {
+                    if (AIMob.getStamina() > strongAttemptedStamina) {
 
-                        mob.AIChooseStamina(strongAttemptedStamina);
+                        AIMob.AIChooseStamina(strongAttemptedStamina);
 
                         System.out.println("Your opponent chose a strong attack!");
                         System.out.println("The stamina used was: " + strongAttemptedStamina);
 
                     } else {
 
-                        AIChoose(mob);
+                        AIChoose(AIMob);
 
                     }
 
                 } else if (ran > 0.25) {
 
-                    if (mob.getStamina() > mediumAttemptedStamina) {
+                    if (AIMob.getStamina() > mediumAttemptedStamina) {
 
-                        mob.AIChooseStamina(mediumAttemptedStamina);
+                        AIMob.AIChooseStamina(mediumAttemptedStamina);
 
                         System.out.println("Your opponent chose a medium attack.");
                         System.out.println("The stamina used was: " + mediumAttemptedStamina);
@@ -53,13 +53,13 @@ public class AICombatMob extends CombatMob {
 
                     } else {
 
-                        AIChoose(mob);
+                        AIChoose(AIMob);
 
                     }
 
                 } else {
 
-                    mob.AIChooseStamina(weakAttemptedStamina);
+                    AIMob.AIChooseStamina(weakAttemptedStamina);
 
                     System.out.println("Your opponent chose a weak attack...");
                     System.out.println("The stamina used was " + weakAttemptedStamina);
@@ -69,20 +69,20 @@ public class AICombatMob extends CombatMob {
 
             } else {
 
-                mob.setAttacking(false);
+                AIMob.setAttacking(false);
 
                 System.out.println("Your enemy blocked.");
 
             }
 
 
-        } else if(mob.getStamina() <= 0) {
+        } else if(AIMob.getStamina() <= 0) {
 
             System.out.println("Your enemy ran out of stamina!");
 
             System.out.println("So they blocked.");
 
-            mob.setAttacking(false);
+            AIMob.setAttacking(false);
 
         }
 
@@ -108,4 +108,5 @@ public class AICombatMob extends CombatMob {
     public AICombatMob(int health, int maxHealth, int stamina, int maxStamina) {
         super(health, maxHealth, stamina, maxStamina);
     }
+
 }
