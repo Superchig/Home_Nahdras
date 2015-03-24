@@ -22,7 +22,6 @@ public class AICombatMob extends CombatMob {
 
         if (AIMob.getStamina() >= weakAttemptedStamina) {
 
-
             if (ran <= 0.75) {
 
                 AIMob.setAttacking(true);
@@ -77,7 +76,7 @@ public class AICombatMob extends CombatMob {
             }
 
 
-        } else if(AIMob.getStamina() <= 0) {
+        } else if (AIMob.getStamina() <= 0) {
 
             System.out.println("Your enemy ran out of stamina!");
 

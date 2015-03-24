@@ -154,6 +154,8 @@ public class App {
             // Start combat functions
             CombatMechanics.battleLoop(pl, trollMob, sc);
 
+            postTrollBattle(sc);
+
         } else if (interactTroll.equals("run")) {
 
             System.out.println("You cowardly run away from this troll.. That's a darn shame.. \nGAME OVER");
