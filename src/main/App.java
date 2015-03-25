@@ -1,9 +1,9 @@
 package main;
 
-import combat.*;
+import combat.CombatMechanics;
+import combatMobs.*;
 import dataManagement.ReadObjects;
 import dataManagement.WriteObjects;
-
 
 import java.util.Scanner;
 
@@ -17,12 +17,24 @@ public class App {
 
     private static AICombatMob trollMob = new TrollMob(150, 150, 50, 50);
     private static AICombatMob bearMob = new BearodyteMob(175, 175, 75, 75);
+    private static AICombatMob twinBrotherMob = new TwinBrotherMob(300, 300, 200, 200);
 
     public static void startMenu(Scanner sc) {
 
-        System.out.println("Welcome to this mediocre indie game made by two middle-schoolers! Would you like to play, load, quit, or die in a hole?");
+        if (pl.isMurderedBrother()) {
 
-        System.out.println("NOTE: USING THE PLAY AFTER ALREADY SAVING MAY OVERWRITE YOUR SAVE FILE");
+            System.out.println("Welcome to this mediocre indie game, you monstrous monster.");
+            System.out.println("Would you like to play, load, quit, die in a hole, or wallow in the imminent misery and regret of brutally murdering a brother?(JUST LIKE THAT, TOO)");
+
+        } else {
+
+            System.out.println("Welcome to this mediocre indie game made by two middle-schoolers! Would you like to play, load, quit, or die in a hole?");
+
+        }
+
+        checkEndings(pl);
+
+        System.out.println("NOTE: TYPING play AFTER ALREADY SAVING MAY OVERWRITE YOUR SAVE FILE");
 
         String menuChoice = sc.nextLine().toLowerCase();
 
@@ -54,6 +66,19 @@ public class App {
             pl = ReadObjects.getPlStorage();
 
             evalLocation(sc);
+
+        } else if (menuChoice.equals("wallow in the imminent misery and regret of brutally murdering a brother")) {
+
+            if (pl.isMurderedBrother()) {
+
+
+                secretEnding(sc);
+
+            } else {
+
+                System.out.println();
+
+            }
 
         } else {
 
@@ -99,19 +124,9 @@ public class App {
 
             System.out.println("Welp. Since you chose not to go into teh[sic] forest, the game is over now. Do you want to restart the game?");
 
-            String restart = sc.nextLine().toLowerCase();
+            pl.setDeEnd1(true);
 
-            if (restart.equals("yes")) {
-
-                System.out.println("Here we go.");
-
-                firstGameBeforeChoices(sc);
-
-            } else {
-
-                System.out.println("Welp. Play again some other time!");
-
-            }
+            decentEnd(sc);
 
 
         } else if (enterForest.equals("God") || enterForest.equals("Jesus")) {
@@ -158,8 +173,9 @@ public class App {
 
         } else if (interactTroll.equals("run")) {
 
-            System.out.println("You cowardly run away from this troll.. That's a darn shame.. \nGAME OVER");
-            startMenu(sc);
+            System.out.println("You cowardly run away from this troll.. That's a darn shame..");
+            pl.setDeEnd2(true);
+            decentEnd(sc);
 
         } else if (interactTroll.equals("communicate") || interactTroll.equals("try to communicate")) {
 
@@ -199,9 +215,11 @@ public class App {
 
             System.out.println("All of a sudden, you are struck by lightning, despite the fact that it should clearly have struck one of the trees, which are much taller than you are.");
 
-            System.out.println("Yeah. You've died. Sending you back to the menu, now.");
+            System.out.println("Yeah. You've died. Believe it or not, this is the second worst ending.");
 
-            startMenu(sc);
+            pl.setDeEnd3(true);
+
+            decentEnd(sc);
 
         } else if (choice.equals("b") || choice.equals("i can has cheezburger?")) {
 
@@ -209,6 +227,9 @@ public class App {
             System.out.println("The troll gives you a cheeseburger.");
             //Yummy
             System.out.println("Congratulations. You have reached the burger end.");
+
+            pl.setDeEnd4(true);
+
             System.out.println("Sending you back to the menu.");
 
             startMenu(sc);
@@ -223,7 +244,8 @@ public class App {
         } else if (choice.equals("e") || choice.equals("hey! There was no 'c' option!")) {
 
             System.out.println("The troll says, 'Quite an astute observation, kind sir.'");
-            tempEnd(sc);
+            pl.setDeEnd5(true);
+            decentEnd(sc);
 
         } else {
 
@@ -235,7 +257,7 @@ public class App {
     }
 
     //Please rename this when I am not looking.
-    public static void postTrollBattle(Scanner sc){
+    public static void postTrollBattle(Scanner sc) {
 
         pl.setLocation("postTrollBattle");
 
@@ -249,7 +271,7 @@ public class App {
 
         String choice = sc.nextLine().toLowerCase();
 
-        if(choice.equals("use the map")){
+        if (choice.equals("use the map")) {
 
             System.out.println("It appears that the map wants to you head north-east. Fortunately, you happened to have brought your handy compass with you!");
             System.out.println("As you head north-east you 'accidently' run into a bearodyte.");
@@ -260,14 +282,16 @@ public class App {
 
             CombatMechanics.battleLoop(pl, bearMob, sc);
 
-            tempEnd(sc);
+            finalBattlePrompt(sc);
 
 
         } else if (choice.equals("get the heck out of this mess")) {
 
             System.out.println("That's okay, but you're a wuss, who knows what that map leads to..");
-            System.out.println("Returning you to the very beginning.");
-            startMenu(sc);
+
+            pl.setDeEnd6(true);
+
+            decentEnd(sc);
 
         } else {
             System.out.println("I'm not joking around here, you need to use one of the ACTUAL answers..");
@@ -275,29 +299,71 @@ public class App {
         }
 
 
-
     }
 
-    //This is useful.
-    public static int battleCount = 0;
-    //Used when completing a battle..
-    //TODO Do we need advanceStory? Can't we just call the next function after the battle is over?
-    public static void advanceStory(Scanner sc){
 
-        if (battleCount == 1) {
+    public static void finalBattlePrompt(Scanner sc) {
+        pl.setLocation("finalBattlePrompt");
 
-            postTrollBattle(sc);
+        WriteObjects.savePrompt(sc);
 
-        } else if(battleCount == 2){
-            /*Insert an amazing battle that we are too lazy to make at the moment.*/
-        } else {//If we somehow mess up and it advances to a nonexistent function.
-            //I'm very funny, am I not?
-            System.out.println("Please contact your local Home_Nahdras programmer if you see this message, thank you.");
-            System.out.println("The error code is: ");
-            jokeError(sc);
+        System.out.println("With the bearodyte defeated, you can continue.");
+        System.out.println("Of course, that is, if you want to continue.");
+        System.out.println("Please specify if you want to continue, or leave the forest.");
+        String choice = sc.nextLine().toLowerCase();
+        if (choice.equals("continue")) {
+            System.out.println("Continuing down the path...");
+            finalBattle(sc);
+        } else if (choice.equals("leave")) {
+            System.out.println("If you say so..");
+
+            pl.setDeEnd7(true);
+
+            decentEnd(sc);
+        } else {
+            System.out.println("Hello? I said whether to leave or continue.");
+            finalBattlePrompt(sc);
         }
+    }
+
+    public static void finalBattle(Scanner sc) {
+        pl.setLocation("finalBattle");
+
+        WriteObjects.savePrompt(sc);
+
+        System.out.println("After hours going down the path you finally reach a cave, and (no, you do not get a choice of going in or not..) you go inside.");
+        System.out.println("Inside, you find.. Your twin brother separated at death!");
+
+        //BAD ENDING COMMENCE
+        System.out.println("He appears docile, and greets you calmly.");
+        System.out.println("Out of the blue, you attack him!");
+        CombatMechanics.battleLoop(pl, twinBrotherMob, sc);
+
+        badEnd(sc);
 
     }
+
+    private static void badEnd(Scanner sc) {
+
+        System.out.println("This is the worst ending possible! You horrible person! You murdered your brother for no legitimate reason. What the heck, man. Who even does that?");
+        System.out.println("Sending you back to the main menu, you monster.");
+        pl.setMurderedBrother(true);
+        pl.setBadEnd(true);
+
+        startMenu(sc);
+    }
+
+    private static void decentEnd(Scanner sc) {
+
+
+        //10/10 would end 10 again ben 10 approves 10/10
+        System.out.println("You have reached one of the few decent endings.");
+        System.out.println("Sending you back to the main menu.");
+
+        startMenu(sc);
+
+    }
+
 
     public static void jokeError(Scanner sc) {
 
@@ -345,6 +411,78 @@ public class App {
         System.out.println("Sending you back to the main menu.");
 
         startMenu(sc);
+
+    }
+
+
+    // Prepare for a rollercoaster of events...
+    public static void secretEnding(Scanner sc) {
+        pl.setLocation("secretEnding");
+        WriteObjects.saveGame();
+
+        System.out.println("Note: press enter (or anything, really) to continue.");
+        System.out.println("Secret ending begin!:");
+        System.out.println("Meanwhile, in a deep cave, somewhere far under the earth.");
+        System.out.println("A troll with a monocle walks over to the dead corpse of someone's twin brother, who was separated at death.");
+
+        sc.nextLine();
+
+        System.out.println("The troll says, 'Good God, man.'");
+        System.out.println("The troll says, 'What happened to this poor soul?'");
+
+        sc.nextLine();
+
+        System.out.println("I (that's right. Me, the narrator. Seriously, I'm a character) say, 'Eh. He was murdered by his twin brother, who was separated at death.'");
+
+        sc.nextLine();
+
+        System.out.println("The troll says, 'The same one who murdered me, yet simultaneously said 4 other things to me?");
+
+        sc.nextLine();
+
+        System.out.println("Uh, ye-");
+
+        sc.nextLine();
+
+        System.out.println("A young courier comes crashing into the room.");
+        System.out.println("The courier says, 'Sir! Sir! I bear horrible news!'");
+
+        sc.nextLine();
+
+        System.out.println("The troll says, 'What is it?'");
+
+        sc.nextLine();
+
+        System.out.println("The courier says, 'London Bridge is falling down.'");
+        System.out.println("The troll says, 'Falling down?'");
+        System.out.println("The courier says, 'Falling down.'");
+
+        sc.nextLine();
+
+        System.out.println("I say, 'London bridge is falling down?'");
+        System.out.println("The troll says, 'My fair lady!");
+
+        sc.nextLine();
+
+        System.out.println("Fin. \n" + " I do love me some fish.");
+        System.out.println("Returning to the start menu.");
+    }
+
+    public static void checkEndings(PlayerCharacter pl) {
+
+        if (pl.isBadEnd() && pl.isDeEnd1() && pl.isDeEnd2() && pl.isDeEnd3() && pl.isDeEnd4() && pl.isDeEnd5()
+                && pl.isDeEnd6() && pl.isDeEnd7() && pl.isWorstEnding2nd()) {
+
+            pl.setUnlockedAllEndings(true);
+
+            System.out.println("The secret ending has been unlocked by unlocking all the other endings.");
+            System.out.println("See if you can find it ;).");
+
+        } else {
+
+            System.out.println("If you play this game enough (and correctly), this message will eventually disappear.");
+
+        }
 
     }
 
