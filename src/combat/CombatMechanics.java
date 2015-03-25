@@ -1,8 +1,11 @@
 package combat;
 
-import java.util.Scanner;
-
+import combatMobs.CombatMob;
+import combatMobs.PlayerCharacter;
+import combatMobs.*;
 import main.App;
+
+import java.util.Scanner;
 
 public class CombatMechanics {
 
@@ -107,12 +110,10 @@ public class CombatMechanics {
 
             System.out.println("Congratulations. You have defeated this... enemy. I'm too lazy to code in specific messages for each mob beaten, after all.");
 
-            PlayerCharacter.heal(App.pl);
+            mob1.heal();
 
             System.out.println("You have also been magically (divinely?) healed. It must be an act of Yahweh, or something.");
-            App.battleCount += 1;
-            // TODO As I put in other past TODO, I don't think this is necessary... It all depends on what you want to do.
-            // App.advanceStory(sc);
+
 
         } else {
 
@@ -122,7 +123,6 @@ public class CombatMechanics {
 
         }
     }
-
 
 
     public static void battlePrompt(PlayerCharacter pl, Scanner sc) {
@@ -150,7 +150,7 @@ public class CombatMechanics {
 
                 pl.chooseStamina(choice2, sc);
 
-            } catch(Exception e) {
+            } catch (Exception e) {
 
                 System.out.println("You're 'exceptional!'");
                 System.out.println("Returning you to the battle prompt.");
